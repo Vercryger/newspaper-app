@@ -1,0 +1,58 @@
+body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: #00B7FF !important;
+  outline: 0 !important;
+}
+
+li {
+  background-color: #F3F3F3 !important;
+}
+
+button {
+  outline: 0 !important;
+}
+
+form {
+  margin-top: 30px;
+}
+
+.message-form-ok {
+  margin-top: 15px;
+  color: green;
+}
+.message-form-error {
+  color: red;
+  margin-top: 15px;
+}
+
+.glyphicon-chevron-left, 
+.glyphicon-chevron-right { 
+  cursor: pointer; 
+  transition: .2s;
+}
+.glyphicon-chevron-left:hover {
+  color: red;
+}
+.glyphicon-chevron-right:hover {
+  color: green;
+}
+.votes {
+  text-align: center;
+  width: 20px;
+}
+.votes,
+.glyphicon {
+  display: inline-block;
+}
+.navbar-new {
+  margin-top: 15px;
+}
+
+.author {
+  font-size: 15px;
+  font-style: italic;
+}

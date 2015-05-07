@@ -1,0 +1,23 @@
+script(type="text/ng-template" id="/register.html")
+  .page-header
+    h1 Flapper News
+
+  .alert.alert-danger.row(ng-show="error")
+    span {{ error.message }}
+
+  form(ng-submit="register()")
+    h3 Register
+
+    .form-group
+      input.form-control(type="text" placeholder="Username" ng-model="user.username")
+
+    .form-group
+      input.form-control(type="password" placeholder="Password" ng-model="user.password")
+
+    .form-group
+      input.form-control(type="password" placeholder="Confirm Password" ng-model="user.confirmedPassword")
+      .messages(ng-hide="emptyPassword()")
+        span.message-form-ok(ng-show="correctPassword()") Password are corrects!
+        span.message-form-error(ng-show="!correctPassword()") Password are incorrects!
+ 
+    button.btn.btn-primary(type="submit") Register

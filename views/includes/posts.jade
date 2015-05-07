@@ -1,0 +1,29 @@
+script(type="text/ng-template" id="/posts.html")
+      .page-header
+        h3
+          a(ng-show="post.link" href="{{ post.link }}") {{ post.title }}
+          
+          span(ng-hide="post.link") {{ post.title }}
+        
+      div(ng-repeat="comment in post.comments | orderBy:'-upvotes'")
+        span.glyphicon.glyphicon-chevron-left(ng-click="decrementUpvotes(comment)")
+        span.votes {{ comment.upvotes }}
+        span.glyphicon.glyphicon-chevron-right(ng-click="incrementUpvotes(comment)")
+        span(style="font-size:20px; margin-left:10px;") {{ comment.body }} 
+        
+        | - by {{ comment.author }}
+      
+      div(ng-hide="isLoggedIn()")
+        h3 You need to 
+          a(href="/#/login") Log In 
+          | or 
+          a(href="/#/register") Register 
+          | before you can add a post.
+
+      form(ng-submit="addComment()" ng-show="isLoggedIn()")
+        h3 Add a new comment
+
+        .form-group
+          input.form-control(type="text" placeholder="Comment" ng-model="body")
+        
+        button.btn.btn-primary(type="submit") Post

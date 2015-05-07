@@ -1,0 +1,35 @@
+extends layout
+
+block content
+  body.container(ng-app="flapperNews")
+    .row
+      .header.clearfix
+        nav.navbar-new
+          ul.nav.nav-pills.pull-right(ng-controller="NavCtrl")
+            li
+              a(href="http://localhost:3000/#/") Home
+            li(ng-show="isLoggedIn()")
+              a.current-user Hi {{ currentUser() }}
+            li(ng-show="isLoggedIn()")
+              a(href="" ng-click="logOut()") Log Out
+            li(ng-hide="isLoggedIn()")
+              a(href="/#/login") Log In
+            li(ng-hide="isLoggedIn()")
+              a(href="/#/register") Register
+
+
+        h3.text-muted Flapper News
+
+      .col-md-6.col-md-offset-3
+        ui-view
+
+    script(src="http://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.10/angular-ui-router.js")
+    
+    // angular templates
+    include ./includes/home.jade
+      
+    include ./includes/posts.jade
+
+    include ./includes/register.jade
+
+    include ./includes/login.jade

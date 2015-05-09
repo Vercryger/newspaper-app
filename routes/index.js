@@ -15,24 +15,6 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'Flapper News' });
 });
 
-router.get('/posts', function(req, res, next) {
-  Post.find(function(err, posts){
-    if(err){ return next(err); }
-
-    res.json(posts);
-  });
-});
-
-router.post('/posts', auth, function(req, res, next) {
-  var post = new Post(req.body);
-  post.author = req.payload.username;
-  
-  post.save(function(err, post) {
-    if(err) { return next(err); }
-    res.json(post);
-  });
-}); 
-
 router.param('post', function(req, res, next, id) {
   var query = Post.findById(id);
   // some validations
@@ -55,6 +37,50 @@ router.param('comment', function(req, res, next, id) {
     req.comment = comment;
     return next();
   });   
+});
+
+router.get('/posts', function(req, res, next) {
+  Post.find(function(err, posts){
+    Post.populate(posts, {path: 'author'}, function(err, posts) {
+      if(err){ return next(err); }
+
+      res.json(posts);
+    });
+  });
+});
+
+router.get('/posts/:post', function(req, res, next) {
+  req.post.deepPopulate('comments.author', function(err, post) {
+    if (err) { return next(err); }
+
+    res.json(post);
+  });
+});
+
+router.post('/posts', auth, function(req, res, next) {
+  var post = new Post(req.body);
+  post.author = new User(req.payload);
+  post.save(function(err, post) {
+    if(err) { return next(err); }
+    res.json(post);
+  });
+}); 
+
+router.post('/posts/:post/comments', auth, function(req, res, next) {
+  var comment = new Comment(req.body);
+  comment.post = req.post;
+  comment.author = new User(req.payload);
+
+  comment.save(function(err, comment){
+    if(err){ return next(err); }
+
+    req.post.comments.push(comment);
+    req.post.save(function(err, post) {
+      if(err){ return next(err); }
+
+      res.json(comment);
+    });
+  });
 });
 
 router.put('/posts/:post/upvote', auth, function(req, res, next) {
@@ -86,31 +112,6 @@ router.put('/posts/:post/comments/:comment/downvote', auth, function(req, res, n
     if (err) { return next(err); }
 
     res.json(comment)
-  });
-});
-
-router.post('/posts/:post/comments', auth, function(req, res, next) {
-  var comment = new Comment(req.body);
-  comment.post = req.post;
-  comment.author = req.payload.username;
-
-  comment.save(function(err, comment){
-    if(err){ return next(err); }
-
-    req.post.comments.push(comment);
-    req.post.save(function(err, post) {
-      if(err){ return next(err); }
-
-      res.json(comment);
-    });
-  });
-});
-
-router.get('/posts/:post', function(req, res, next) {
-  req.post.populate('comments', function(err, post) {
-    if (err) { return next(err); }
-
-    res.json(post);
   });
 });
 

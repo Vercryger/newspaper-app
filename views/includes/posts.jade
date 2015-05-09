@@ -11,7 +11,7 @@ script(type="text/ng-template" id="/posts.html")
         span.glyphicon.glyphicon-chevron-right(ng-click="incrementUpvotes(comment)")
         span(style="font-size:20px; margin-left:10px;") {{ comment.body }} 
         
-        | - by {{ comment.author }}
+        | - by {{ comment.author.username }}
       
       div(ng-hide="isLoggedIn()")
         h3 You need to 

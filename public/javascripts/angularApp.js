@@ -143,7 +143,7 @@ app.factory('auth', ['$http', '$window', function($http, $window){
 	  }
 	};
 
-  auth.currentUser = function(){
+  auth.currentUser = function() {
 	  if(auth.isLoggedIn()){
 	    var token = auth.getToken();
 	    var payload = JSON.parse($window.atob(token.split('.')[1]));
@@ -177,13 +177,12 @@ app.controller('MainCtrl', ['$scope', 'posts' , 'auth',
 
 		$scope.isLoggedIn = auth.isLoggedIn;
 
-		$scope.addPost = function(){
+		$scope.addPost = function() {
 		  if(!$scope.title || $scope.title === '') { return; }
 		  posts.create({
 		    title: $scope.title,
 		    link: $scope.link,
 		    upvotes: 0,
-		    author: auth.currentUser,
 		    comments: []
 		  });
 		  $scope.title = '';
@@ -244,10 +243,9 @@ app.controller('PostsCtrl', ['$scope', 'posts', 'post', 'auth',
 		$scope.isLoggedIn = auth.isLoggedIn;
 
 		$scope.addComment = function(){
-		  if($scope.body === '') { return; }
+		  if(!$scope.body) { return; }
 		 	posts.addComment(post._id, {
 		    body: $scope.body,
-		    author: 'user',
 		    upvotes: 0
 		  }).success(function(comment) {
 		    $scope.post.comments.push(comment);

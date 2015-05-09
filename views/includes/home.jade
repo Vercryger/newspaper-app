@@ -13,7 +13,7 @@ script(type="text/ng-template" id="/home.html")
           
           span(ng-hide="post.link") {{ post.title }}
 
-          span.author(ng-show="post.author") posted by {{ post.author }} 
+          span.author(ng-show="post.author") posted by {{ post.author.username }}  
 
           a(href="#/posts/{{ post._id }}") See the comments     
       

@@ -7,7 +7,7 @@ function($stateProvider, $urlRouterProvider) {
 
   $stateProvider
     .state('home', {
-      url: '/home',
+      url: '/',
       templateUrl: '/home.html',
       controller: 'MainCtrl',
     	resolve: {
@@ -50,7 +50,7 @@ function($stateProvider, $urlRouterProvider) {
 		  }]
 		});
 
-  $urlRouterProvider.otherwise('home');
+  $urlRouterProvider.otherwise('/');
 }]);
 
 app.factory('posts', ['$http', 'auth', function($http, auth) {
@@ -99,7 +99,6 @@ app.factory('posts', ['$http', 'auth', function($http, auth) {
 	  	headers: {Authorization: 'Bearer '+auth.getToken()}
 	  });
 	};
-
 
 	o.upvoteComment = function(post, comment) {
 	  return $http.put('/posts/' + post._id + '/comments/'+ comment._id + '/upvote', null, {

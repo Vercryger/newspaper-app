@@ -1,5 +1,5 @@
 body {
-  padding: 50px;
+  padding: 0 50px 50px 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
   color: #424242;
 }
@@ -9,6 +9,7 @@ h1 {
 }
 
 a {
+  cursor: pointer;
   color: #e91e63 !important;
   outline: 0 !important;
   transition: .3s;
@@ -39,35 +40,60 @@ form {
   margin-top: 15px;
   color: green;
 }
+
 .message-form-error {
   color: red;
   margin-top: 15px;
 }
 
-.glyphicon-chevron-left, 
-.glyphicon-chevron-right { 
-  cursor: pointer; 
+.glyphicon-chevron-left,
+.glyphicon-chevron-right {
+  cursor: pointer;
   transition: .2s;
 }
+
 .glyphicon-chevron-left:hover {
   color: red;
 }
+
 .glyphicon-chevron-right:hover {
   color: green;
 }
-.votes {
-  text-align: center;
-  width: 20px;
-}
-.votes,
-.glyphicon {
-  display: inline-block;
-}
+
 .navbar-new {
   margin-top: 15px;
 }
 
-.author {
+/******** POST STYLES *********/
+.post-unit {
+  margin-bottom: 5px;
+}
+.post-unit .post-comments {
+  display: inline-block;
+  width: 5%;
+  margin-top: -5px;
+  text-align: center;
+  position: relative;
+  top: 5px;
+}
+.post-unit .post-comments .comment-number {
+  display: block;
+  color: #333;
+  height: 5px;
+  position: relative;
+  top: 6px;
+  z-index: 1;
+}
+.post-unit .post-comments .glyphicon-comment {
+  font-size: 24px;
+  color: pink;
+}
+.post-unit .post-info {
+  width: 95%;
+  font-size: 20px;
+  margin-left: 5px;
+}
+.post-unit .author {
   font-size: 15px;
   font-style: italic;
 }

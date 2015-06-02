@@ -1,36 +1,34 @@
 script(type="text/ng-template" id="/home.html")
-      .page-header
-        h1 Latest News
+  .page-header
+    h1 Latest News
+  
+  .post-unit(ng-repeat="post in posts | orderBy:'-upvotes'")
+    //- span.glyphicon.glyphicon-chevron-left(ng-click="decrementUpvotes(post)")
+    //- span.votes {{ post.upvotes }}
+    //- span.glyphicon.glyphicon-chevron-right(ng-click="incrementUpvotes(post)")
+    span.post-comments
+      span.comment-number {{ post.comments.length }}
+      span.glyphicon.glyphicon-comment 
+
+    span.post-info
+      a(href="#/posts/{{ post._id }}") {{ post.title }} 
       
-      div(ng-repeat="post in posts | orderBy:'-upvotes'")
-        
-        span.glyphicon.glyphicon-chevron-left(ng-click="decrementUpvotes(post)")
-        span.votes {{ post.upvotes }}
-        span.glyphicon.glyphicon-chevron-right(ng-click="incrementUpvotes(post)")
-        
-        span(style="font-size:20px; margin-left:10px;")
-          a(ng-show="post.link" href="{{ post.link }}") {{ post.title }} 
-          
-          span(ng-hide="post.link") {{ post.title }}
+      span.author(ng-show="post.author") posted by {{ post.author.username }}  
 
-          span.author(ng-show="post.author") posted by {{ post.author.username }}  
+  div(ng-hide="isLoggedIn()")
+    h3 You need to 
+      a(href="/#/login") Log In 
+      | or 
+      a(href="/#/register") Register 
+      | before you can add a post.
 
-          a(href="#/posts/{{ post._id }}") See the comments     
-      
-      div(ng-hide="isLoggedIn()")
-        h3 You need to 
-          a(href="/#/login") Log In 
-          | or 
-          a(href="/#/register") Register 
-          | before you can add a post.
+  form(ng-submit="addPost()" ng-show="isLoggedIn()")
+    h3 Add a new post
 
-      form(ng-submit="addPost()" ng-show="isLoggedIn()")
-        h3 Add a new post
-
-        .form-group
-          input.form-control(type="text" placeholder="Title" ng-model="title")
-        
-        .form-group
-          input.form-control(type="text" placeholder="Link" ng-model="link")
-        
-        button.btn.btn-primary(type="submit") Post
+    .form-group
+      input.form-control(type="text" placeholder="Title" ng-model="title")
+    
+    .form-group
+      input.form-control(type="text" placeholder="Link" ng-model="link")
+    
+    button.btn.btn-primary(type="submit") Post

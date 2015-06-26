@@ -8,9 +8,11 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var passport = require('passport');
 
+var sassMiddleware = require('node-sass-middleware');
+
 require('./models/Posts');
-require('./models/Comments');
 require('./models/Users');
+require('./models/Comments');
 require('./config/passport');
 mongoose.connect('mongodb://localhost/news');
 
@@ -22,6 +24,18 @@ var app = express();
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
+
+app.use(sassMiddleware({
+  src: path.join(__dirname, 'public/stylesheets/sass'),
+  dest: path.join(__dirname, 'public/stylesheets'),
+  debug: true,
+  indentedSyntax: true,
+  sourceMap: true,
+  prefix: '/stylesheets',
+  outputStyle: 'compressed'
+}));
+
+app.use(express.static(path.join(__dirname, 'public')));
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(__dirname + '/public/favicon.ico'));
@@ -65,6 +79,5 @@ app.use(function(err, req, res, next) {
     error: {}
   });
 });
-
 
 module.exports = app;

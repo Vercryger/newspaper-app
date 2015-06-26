@@ -6,7 +6,7 @@ if [ ! -d node_modules ]; then
   npm install
 fi;
 
-if [ $1 = 'monitor' ]; then
+if [ $# -eq 1 ] && [ $1 = 'monitor' ]; then
   echo "*********************** MONITORING SERVER ***********************"
   nodemon bin/www 
 else 

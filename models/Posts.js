@@ -4,7 +4,6 @@ var deepPopulate = require('mongoose-deep-populate');
 var PostSchema = new mongoose.Schema({
   title: String,
   body: String,
-  link: String,
   upvotes: { type: Number, default: 0 },
   author: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   comments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }]

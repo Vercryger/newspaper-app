@@ -189,10 +189,14 @@ app.controller('MainCtrl', ['$scope', 'posts' , 'auth',
 		};
 
 		$scope.incrementUpvotes = function(post) {
-		  posts.upvote(post);
+		  posts.upvote(post).error(function(error) {
+	    	$scope.error = error;
+	    });
 		};
 		$scope.decrementUpvotes = function(post) {
-		  posts.downvote(post);
+		  posts.downvote(post).error(function(error) {
+		  	$scope.error = error;
+		  });
 		};
 	}
 ]);

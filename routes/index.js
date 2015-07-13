@@ -5,8 +5,9 @@ var passport = require('passport');
 var jwt = require('express-jwt');
 
 var Post = mongoose.model('Post');
-var Comment = mongoose.model('Comment');
 var User = mongoose.model('User');
+var PostUser = mongoose.model('PostUser');
+var Comment = mongoose.model('Comment');
 
 var auth = jwt({secret: 'SECRET', userProperty: 'payload'});
 
@@ -72,11 +73,11 @@ router.post('/posts/:post/comments', auth, function(req, res, next) {
   comment.author = new User(req.payload);
 
   comment.save(function(err, comment){
-    if(err){ return next(err); }
+    if (err) { return next(err); }
 
     req.post.comments.push(comment);
     req.post.save(function(err, post) {
-      if(err){ return next(err); }
+      if (err) { return next(err); }
 
       res.json(comment);
     });
@@ -84,18 +85,42 @@ router.post('/posts/:post/comments', auth, function(req, res, next) {
 });
 
 router.put('/posts/:post/upvote', auth, function(req, res, next) {
-  req.post.upvote(function(err, post){
-    if (err) { return next(err); }
+  var post = req.post;
+  var user = new User(req.payload);
+  var postUserData = {'user': post.id,'post': user.id, 'vote': true};
+  var postUser = new PostUser(postUserData);
 
-    res.json(post);
+  PostUser.find(postUserData, function(err, data) {
+    if (data.length != 0) return res.status(400).json({message: 'you already upvoted this!'});
+    
+    req.post.upvote(function(err, post) {
+      if (err) { return next(err); }
+
+      postUser.save(function(err, postuser) {
+        if (err) { return next(err); }
+        res.json(post);
+      });
+    });
   });
 });
 
 router.put('/posts/:post/downvote', auth, function(req, res, next) {
-  req.post.downvote(function(err, post){
-    if (err) { return next(err); }
+  var post = req.post;
+  var user = new User(req.payload);
+  var postUserData = {'user': post.id,'post': user.id, 'vote': false};
+  var postUser = new PostUser(postUserData);
 
-    res.json(post);
+  PostUser.find(postUserData, function(err, data) {
+    if (data.length != 0) return res.status(400).json({message: 'you already downvoted this!'});
+    
+    req.post.downvote(function(err, post) {
+      if (err) { return next(err); }
+
+      postUser.save(function(err, postuser) {
+        if (err) { return next(err); }
+        res.json(post);
+      });
+    });
   });
 });
 

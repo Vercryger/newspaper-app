@@ -12,6 +12,7 @@ var sassMiddleware = require('node-sass-middleware');
 
 require('./models/Posts');
 require('./models/Users');
+require('./models/Posts_Users');
 require('./models/Comments');
 require('./config/passport');
 mongoose.connect('mongodb://localhost/news');

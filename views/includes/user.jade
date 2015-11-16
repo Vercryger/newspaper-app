@@ -1,0 +1,8 @@
+script(type="text/ng-template" id="/user.html")
+  .col-sm-6
+    h3 Hi {{ user.username }}
+  .col-sm-6
+    img(ng-hide="user.avatarPath" width="150" class="img-circle" src="/images/anonymous.gif" alt="Default Avatar")
+    img(ng-show="user.avatarPath" width="150" class="img-circle" ng-src="{{user.avatarPath}}" alt="Custom Avatar")
+  // TODO implement this state
+  a.btn.btn-default(ui-sref="editUsrPrfl({id: user._id})") Edit profile

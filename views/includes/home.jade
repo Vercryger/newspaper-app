@@ -7,7 +7,7 @@ script(type="text/ng-template" id="/home.html")
       span(aria-hidden="true") &times;
     | Hey buddy! {{ error.message }}
   
-  .post-unit(ng-repeat="post in posts | orderBy:'-upvotes'")
+  .post-unit(ng-repeat="post in posts | orderBy:'-upvotes' | limitTo: 8")
     span.glyphicon.glyphicon-chevron-left(ng-click="decrementUpvotes(post)")
     span.votes {{ post.upvotes }}
     span.glyphicon.glyphicon-chevron-right(ng-click="incrementUpvotes(post)")

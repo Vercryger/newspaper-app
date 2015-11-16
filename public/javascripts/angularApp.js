@@ -28,6 +28,41 @@ function($stateProvider, $urlRouterProvider) {
 		  }
 		})
 
+    // TODO Extract controller and Factory service
+		.state('user', {
+    	url: '/users/{id}',
+    	templateUrl: '/user.html',
+    	controller: ['$scope', 'user', function($scope, user) {
+    		$scope.user = user;
+    	}],
+    	resolve: {
+    		user: ['$stateParams', '$http', function($stateParams, $http) {
+    			return $http.get('/users/'+$stateParams.id).then(function(res) {
+    				return res.data;
+    			});
+    		}]
+    	}
+    })
+   
+   	.state('editUsrPrfl', {
+   		url: '/users/{id}/edit',
+   		templateUrl: '/user-edit.html',
+   		controller: ['$scope', '$http', 'profile', function($scope, $http, profile) {
+   			$scope.profile = profile;
+   			$scope.updateAvatar = function() {
+   				$http.put('/users/'+profile._id+'/updateAvatar', null);
+   			};
+   		}],
+   		resolve: {
+   			profile: ['$stateParams', '$http', function($stateParams, $http) {
+    			return $http.get('/users/'+$stateParams.id).then(function(res) {
+    				return res.data;
+    			});
+    		}]
+   		}
+   	})
+
+   	// ----------
 		.state('login', {
 		  url: '/login',
 		  templateUrl: '/login.html',
@@ -75,7 +110,7 @@ app.factory('posts', ['$http', 'auth', function($http, auth) {
 	o.upvote = function(post) {
 		return $http.put('/posts/'+ post._id + '/upvote', null, {
 			headers: {Authorization: 'Bearer '+auth.getToken()}
-		}).success(function(data) {
+		}).success(function(data) { // TODO Remove data parameter
 			post.upvotes += 1;
 		});
 	};
@@ -83,7 +118,7 @@ app.factory('posts', ['$http', 'auth', function($http, auth) {
 	o.downvote = function(post) {
 		return $http.put('/posts/'+ post._id + '/downvote', null, {
 			headers: {Authorization: 'Bearer '+auth.getToken()}
-		}).success(function(data) {
+		}).success(function(data) { // TODO Remove data parameter
 			post.upvotes -= 1;
 		});
 	};
@@ -147,7 +182,7 @@ app.factory('auth', ['$http', '$window', function($http, $window){
 	    var token = auth.getToken();
 	    var payload = JSON.parse($window.atob(token.split('.')[1]));
 
-	    return payload.username;
+	    return payload;
 	  }
 	};
 
@@ -185,7 +220,6 @@ app.controller('MainCtrl', ['$scope', 'posts' , 'auth',
 		    comments: []
 		  });
 		  $scope.title = '';
-		  $scope.link = '';
 		};
 
 		$scope.incrementUpvotes = function(post) {
@@ -265,4 +299,3 @@ app.controller('PostsCtrl', ['$scope', 'posts', 'post', 'auth',
 		};
 	}
 ]);
-

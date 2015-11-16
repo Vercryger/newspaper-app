@@ -1,0 +1,10 @@
+script(type="text/ng-template" id="/user-edit.html")
+  .col-sm-6.center
+    h1 {{ profile.username }}
+    img(ng-show="profile.avatarPath" width="150" class="img-circle" ng-src="{{profile.avatarPath}}" alt="Custom Avatar")
+  form.col-sm-6(ng-submit="updateAvatar()" enctype="multipart/form-data")
+    label Select new avatar
+    .form-group
+      input.form-control(type="file"  multiple="multiple" name="uploadAv")
+    
+    button.btn.btn-primary(ng-type="submit") Send

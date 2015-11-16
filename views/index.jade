@@ -7,7 +7,7 @@ block content
         nav.navbar-new
           ul.nav.nav-pills.pull-right(ng-controller="NavCtrl")
             li(ui-sref-active="active"): a(ui-sref="home") Home
-            li(ng-show="isLoggedIn()"): a.current-user Hi {{ currentUser() }}
+            li(ui-sref-active="active" ng-show="isLoggedIn()"): a(ui-sref="user({id: currentUser()._id })") Hi {{ currentUser().username }}
             li(ng-show="isLoggedIn()"): a(ng-click="logOut()") Log Out
             li(ui-sref-active="active" ng-hide="isLoggedIn()"): a(ui-sref="login") Log In
             li(ui-sref-active="active" ng-hide="isLoggedIn()"): a(ui-sref="register") Register
@@ -27,3 +27,7 @@ block content
     include ./includes/register.jade
 
     include ./includes/login.jade
+
+    include ./includes/user.jade
+
+    include ./includes/user-edit.jade
